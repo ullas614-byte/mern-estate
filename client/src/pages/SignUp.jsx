@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Signup() {
+export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -36,7 +36,7 @@ export default function Signup() {
         setLoading(false);
         setTimeout(()=>{
           navigate("/sign-in")
-        }, 2000)
+        });
       }
     } catch (error) {
       setLoading(false);
