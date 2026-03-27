@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp() {
@@ -7,7 +6,7 @@ export default function SignUp() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -27,15 +26,15 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if(!res.ok){
+      if (!res.ok) {
         setError(data.message || "Something went wrong");
         setLoading(false);
         return;
-      }else{
+      } else {
         setMessage("User created successfully");
         setLoading(false);
-        setTimeout(()=>{
-          navigate("/sign-in")
+        setTimeout(() => {
+          navigate("/sign-in");
         });
       }
     } catch (error) {
@@ -45,62 +44,116 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white p-8 rounded-xl shadow-lg w-96"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-center">Signup</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Username"
-            className="w-full p-2 mb-3 border rounded"
-            id="username"
-            onChange={handleChange}
-          />
+    <div className="h-screen w-full flex items-center justify-center bg-gray-100 px-4 overflow-hidden">
+      {/* Main Container */}
+      <div className="flex w-full max-w-5xl max-h-[90vh] bg-white rounded-2xl shadow-lg overflow-hidden">
+        {/* LEFT SIDE - FORM */}
+        <div className="w-full md:w-1/2 p-6 lg:p-10 flex flex-col justify-center bg-white overflow-y-auto">
+          {/* Logo */}
+          <div className="mb-4">
+            <h1 className="text-2xl lg:text-3xl font-extrabold tracking-tight text-blue-900 uppercase">
+              D Prime Assets
+            </h1>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="h-px w-6 bg-yellow-500"></span>
+              <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-widest">
+                Real Estate Management
+              </p>
+            </div>
+          </div>
 
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full p-2 mb-3 border rounded"
-            id="email"
-            onChange={handleChange}
-          />
+          {/* Title */}
+          <div className="mb-4">
+          <h2 className="text-2xl font-semibold mb-2">Create Your Account</h2>
+          <p className="text-gray-500 mb-6">
+            Start managing your properties today
+          </p>
+          </div>
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full p-2 mb-4 border rounded"
-            id="password"
-            onChange={handleChange}
-          />
+          {/* Form */}
+          <form className="space-y-3" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Username"
+              id="username"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-900"
+              onChange={handleChange}
+            />
 
-          <motion.button
-            disabled={loading}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="w-full bg-blue-800 text-white p-2 rounded"
-          >
-            {loading ? "Loading..." : "Sign Up"}
-          </motion.button>
-          {message && (
-  <p className="text-green-600 text-center mt-3">{message}</p>
-)}
+            <input
+              type="email"
+              placeholder="Email"
+              id="email"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-900"
+              onChange={handleChange}
+            />
 
-{error && (
-  <p className="text-red-600 text-center mt-3">{error}</p>
-)}
-        </form>
-        <div className="flex gap-2">
-          <p>Have an account?</p>
-          <Link to={"/sign-in"}>
-            <span className="text-blue-700">Sign In</span>
-          </Link>
+            <input
+              type="password"
+              placeholder="Password"
+              id="password"
+              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-900"
+              onChange={handleChange}
+            />
+            {/* Button */}
+            <button
+              type="submit"
+              className="w-full bg-blue-900 text-white py-3 rounded-lg hover:bg-yellow-500 hover:text-black transition duration-300"
+            >
+              {loading ? "Loading..." : "Create Account"}
+            </button>
+            {message && (
+              <p className="text-green-600 text-center mt-3">{message}</p>
+            )}
+
+            {error && <p className="text-red-600 text-center mt-3">{error}</p>}
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center my-6">
+            <div className="flex-grow h-px bg-gray-300"></div>
+            <span className="px-3 text-gray-400 text-sm">OR</span>
+            <div className="flex-grow h-px bg-gray-300"></div>
+          </div>
+
+          {/* Social Buttons */}
+          <div className="flex gap-4">
+            <button className="w-full border border-gray-300 py-2 rounded-lg hover:bg-gray-100">
+              Google
+            </button>
+            <button className="w-full border border-gray-300 py-2 rounded-lg hover:bg-gray-100">
+              Apple
+            </button>
+          </div>
+
+          {/* Footer */}
+          <p className="text-sm text-gray-500 mt-6 text-center">
+            Already have an account?{" "}
+            <Link to={"/sign-in"}>
+              <span className="text-blue-900 cursor-pointer font-medium">
+                Sign in
+              </span>
+            </Link>
+          </p>
+
+          {/* Trust */}
+          <p className="text-xs text-gray-400 mt-2 text-center">
+            🔒 Secure Registration
+          </p>
         </div>
-      </motion.div>
+
+        {/* RIGHT SIDE - IMAGE */}
+        <div className="hidden md:block md:w-1/2 relative">
+          <img
+            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa"
+            alt="property"
+            className="h-full w-full object-cover"
+          />
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/40"></div>
+        </div>
+      </div>
     </div>
   );
 }
