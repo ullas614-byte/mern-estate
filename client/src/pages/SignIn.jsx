@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { FaGoogle, FaApple, FaTwitter, FaLinkedin } from "react-icons/fa";
 import {
   signInStart,
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice.js";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
+import { app } from "../firebase.js";
+
+
+
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
@@ -46,6 +52,29 @@ export default function SignIn() {
       dispatch(signInFailure(error.message));
     }
   };
+
+  const handleGoogleClick= async()=>{
+    try {
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth(app);
+      const result = await signInWithPopup(auth, provider);
+      
+      const res = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type':'application/json',
+        },
+        body: JSON.stringify({ name: result.user.displayName, email: result.user.email, photo:result.user.photoURL }),
+      })
+      const data = await res.json();
+      dispatch(signInSuccess(data));
+      navigate('/');
+      
+    } catch (error) {
+      console.log("Could not signin with google", error);
+      
+    }
+  }
 
   return (
     <div className="h-screen w-full flex items-center justify-center bg-gray-100 px-4 overflow-hidden">
@@ -109,14 +138,28 @@ export default function SignIn() {
           </div>
 
           {/* Social Buttons */}
-          <div className="flex gap-4">
-            <button className="w-full border border-gray-300 py-2 rounded-lg hover:bg-gray-100">
-              Google
+          <div className="flex gap-3 justify-center">
+            {/* Google */}
+            <button onClick={handleGoogleClick} type="button" className="w-10 h-10 border border-gray-300 py-3 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-red-50 hover:border-red-400 hover:scale-105 group">
+              <FaGoogle className="text-xl text-gray-400 group-hover:text-red-500 transition-colors duration-300" />
             </button>
-            <button className="w-full border border-gray-300 py-2 rounded-lg hover:bg-gray-100">
-              Apple
+          
+            {/* Apple */}
+            <button type="button" className="w-10 h-10 border border-gray-300 py-3 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-gray-900 hover:border-gray-900 hover:scale-105 group">
+              <FaApple className="text-xl text-gray-400 group-hover:text-white transition-colors duration-300" />
+            </button>
+          
+            {/* Twitter/X */}
+            <button type="button" className="w-10 h-10 border border-gray-300 py-3 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-sky-50 hover:border-sky-400 hover:scale-105 group">
+              <FaTwitter className="text-xl text-gray-400 group-hover:text-sky-500 transition-colors duration-300" />
+            </button>
+          
+            {/* LinkedIn */}
+            <button type="button" className="w-10 h-10 border border-gray-300 py-3 rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-blue-50 hover:border-blue-600 hover:scale-105 group">
+              <FaLinkedin className="text-xl text-gray-400 group-hover:text-blue-600 transition-colors duration-300" />
             </button>
           </div>
+          
 
           {/* Footer */}
           <p className="text-sm text-gray-500 mt-3 text-center">

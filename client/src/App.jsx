@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import SignIn from "./pages/Signin";
-import SignUp from "./pages/SignUp";
-import About from "./pages/About";
-import Profile from "./pages/Profile";
+import Home from "./pages/Home.jsx";
+import SignIn from "./pages/SignIn.jsx";
+import SignUp from "./pages/SignUp.jsx";
+import About from "./pages/About.jsx";
+import Profile from "./pages/Profile.jsx";
 
 export default function App() {
   return <BrowserRouter>
